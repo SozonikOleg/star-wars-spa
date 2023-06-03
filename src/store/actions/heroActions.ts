@@ -1,8 +1,16 @@
-import { Dispatch } from "@reduxjs/toolkit";
+import { AppDispatch } from "./../index";
+import axios from "../../axios";
+import { IHero, ServerResponse } from "../../models/models";
+import { heroSlice } from "../slices/heroSlice";
 
 export const fetchHeros = () => {
-  return (dispatch: Dispatch) => {
+  return async (dispatch: AppDispatch) => {
     try {
-    } catch (e) {}
+      dispatch(heroSlice.actions.fetching());
+      const response = await axios.get<ServerResponse<IHero>>("people/");
+      dispatch(heroSlice.actions.fetchSuccess(response.data.results));
+    } catch (e) {
+      dispatch(heroSlice.actions.fetchError(e as Error));
+    }
   };
 };
