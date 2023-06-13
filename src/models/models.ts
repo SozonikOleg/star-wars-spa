@@ -12,3 +12,9 @@ export interface ServerResponse<T> {
   previous: number | null;
   results: T[];
 }
+
+export interface IFilterHeroes {
+  eye_color: string;
+  gender: string;
+  height: string;
+}
