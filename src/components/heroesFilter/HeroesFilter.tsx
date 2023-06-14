@@ -1,7 +1,11 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { IFilterHeroes } from "../models/models";
+import { IFilterHeroes } from "../../models/models";
+import { filterData } from "./initialFilterData";
+import { useAppDispatch } from "../../hook/redux";
+import { heroSlice } from "../../store/slices/heroSlice";
 
 export const HeroesFilter = () => {
+  const dispatch = useAppDispatch();
   const [isClearButton, setIsClearButton] = useState(false);
   const [filter, setFilter] = useState<IFilterHeroes>({
     eye_color: "",
@@ -9,10 +13,14 @@ export const HeroesFilter = () => {
     height: "",
   });
 
+  const { heightList, genderList, eyeList } = filterData;
+
   useEffect(() => {
     filter.eye_color || filter.gender || filter.height
       ? setIsClearButton(true)
       : setIsClearButton(false);
+
+    dispatch(heroSlice.actions.filter(filter));
   }, [filter]);
 
   const changeHandler = (event: ChangeEvent<HTMLSelectElement>) =>
@@ -26,47 +34,47 @@ export const HeroesFilter = () => {
     });
 
   return (
-    <div className="border py-2 px-4 mb-2">
-      <span className="font-bold mr-2">Filter</span>
+    <div className="border py-2 px-4 mb-2 bg-blue-50 border rounded">
+      <span className="font-bold mr-2 text-blue-400">Filter</span>
 
       <select
         name="eye_color"
-        className="border py-1.5 px-4 mr-2"
+        className="border rounded py-1.5 px-4 mr-2"
         onChange={changeHandler}
         value={filter.eye_color}
       >
         <option value="" disabled>
           Eye color
         </option>
-        {["Test", "Test", "Test"].map((t) => (
+        {eyeList.map((t) => (
           <option key={t}>{t}</option>
         ))}
       </select>
 
       <select
         name="gender"
-        className="border py-1.5 px-4 mr-2"
+        className="border rounded py-1.5 px-4 mr-2"
         onChange={changeHandler}
         value={filter.gender}
       >
         <option value="" disabled>
           Gender
         </option>
-        {["Test", "Test", "Test"].map((t) => (
+        {genderList.map((t) => (
           <option key={t}>{t}</option>
         ))}
       </select>
 
       <select
         name="height"
-        className="border py-1.5 px-4 mr-4"
+        className="border rounded py-1.5 px-4 mr-4"
         onChange={changeHandler}
         value={filter.height}
       >
         <option value="" disabled>
           Height
         </option>
-        {["Test", "Test", "Test"].map((t) => (
+        {heightList.map((t) => (
           <option key={t}>{t}</option>
         ))}
       </select>

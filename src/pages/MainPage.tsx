@@ -4,7 +4,7 @@ import { HeroesSearch } from "../components/HeroesSearch";
 import { useAppDispatch, useAppSelector } from "../hook/redux";
 import { fetchHeroes } from "../store/actions/heroActions";
 import ReactPaginate from "react-paginate";
-import { HeroesFilter } from "../components/HeroesFilter";
+import { HeroesFilter } from "../components/heroesFilter/HeroesFilter";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -25,19 +25,23 @@ export const MainPage = () => {
     dispatch(fetchHeroes(page, ITEMS_PER_PAGE));
   }, [dispatch, page]);
 
+  console.log("heros", heros);
+
   return (
     <div className="container mx-auto max-w-[760px] pt-5 ">
       <HeroesSearch />
-
       <HeroesFilter />
 
       {loading && (
         <p className="text-center text-lg text-blue-400">Loading ...</p>
       )}
+
       {heros?.length === 0 && !loading && (
         <p className="text-center text-lg text-blue-400">No heroes ...</p>
       )}
+
       {error && <p className="text-center text-lg text-red-600">{error}</p>}
+
       {heros?.map((hero) => {
         return <HeroCard key={hero.name} hero={hero} />;
       })}
@@ -50,10 +54,10 @@ export const MainPage = () => {
         pageCount={pageCount}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
-        pageClassName="py-1 px-2 border mr-1 text-blue-400"
-        containerClassName="flex py-1 px-2 border text-blue-400"
-        previousClassName="py-1 px-2 border mr-1 text-blue-400"
-        nextClassName="py-1 px-2 border mr-1 text-blue-400"
+        pageClassName="py-1 px-2 border rounded mr-1 text-blue-400"
+        containerClassName="flex py-1 px-2 border rounded text-blue-400"
+        previousClassName="py-1 px-2 border rounded mr-1 text-blue-400"
+        nextClassName="py-1 px-2 border rounded mr-1 text-blue-400"
         activeClassName="bg-blue-50 text-blue-400"
       />
     </div>

@@ -4,6 +4,7 @@ export interface IHero {
   birth_year: string;
   eye_color: string;
   gender: string;
+  height: string;
 }
 
 export interface ServerResponse<T> {
@@ -14,6 +15,12 @@ export interface ServerResponse<T> {
 }
 
 export interface IFilterHeroes {
+  eye_color: string;
+  gender: string;
+  height: string;
+}
+
+export interface IFilter {
   eye_color: string;
   gender: string;
   height: string;

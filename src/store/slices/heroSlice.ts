@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IHero } from "../../models/models";
+import { IHero, IFilter } from "../../models/models";
 
 interface HeroState {
   loading: boolean;
   error: string;
   count: number;
   heros: IHero[];
+  herosContainer: IHero[];
 }
 
 const initialState: HeroState = {
@@ -13,6 +14,7 @@ const initialState: HeroState = {
   error: "",
   count: 0,
   heros: [],
+  herosContainer: [],
 };
 
 interface IHeroPayload {
@@ -30,12 +32,19 @@ export const heroSlice = createSlice({
     fetchSuccess(state, action: PayloadAction<IHeroPayload>) {
       state.loading = false;
       state.heros = action.payload.heros;
+      state.herosContainer = action.payload.heros;
       state.count = action.payload.count;
       state.error = "";
     },
     fetchError(state, action: PayloadAction<Error>) {
       state.loading = false;
       state.error = action.payload.message;
+    },
+    filter(state, action: PayloadAction<IFilter>) {
+      state.heros = state.herosContainer
+        .filter((e) => e.eye_color.includes(action.payload.eye_color))
+        .filter((g) => g.gender.includes(action.payload.gender))
+        .filter((h) => h.height.includes(action.payload.height));
     },
   },
 });
